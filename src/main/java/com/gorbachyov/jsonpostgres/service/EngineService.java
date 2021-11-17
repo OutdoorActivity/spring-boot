@@ -6,10 +6,26 @@ import com.gorbachyov.jsonpostgres.repositories.EngineRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class EngineService {
     @Autowired
     private EngineRepository engineRepository;
+
+    public Engine create(Engine engine) {
+        return engineRepository.save(engine);
+    }
+
+
+
+    public Object show(Long id) {
+        return id == null ? engineRepository.findAll() : engineRepository.findById(id);
+    }
+
+    public List<Engine> createList(List<Engine> engines) {
+        return (List<Engine>) engineRepository.saveAll(engines);
+    }
 
     public Engine updateEngine(Long id, Engine engine) {
 
@@ -28,11 +44,6 @@ public class EngineService {
     }
 
     public void deleteEngine(Long id) {
-        if (engineRepository.findById(id).isPresent()) {
-            engineRepository.deleteById(id);
-        }
-        else {
-            throw new RuntimeException("engine doesn't exist");
-        }
+        engineRepository.deleteById(id);
     }
 }

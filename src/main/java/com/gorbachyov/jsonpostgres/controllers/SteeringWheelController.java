@@ -1,12 +1,7 @@
 package com.gorbachyov.jsonpostgres.controllers;
 
 import com.gorbachyov.jsonpostgres.entities.SteeringWheel;
-import com.gorbachyov.jsonpostgres.repositories.SteeringWheelRepository;
 import com.gorbachyov.jsonpostgres.service.SteeringWheelService;
-import lombok.AllArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -14,31 +9,29 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "steeringWheel/api")
-@AllArgsConstructor
+@RequestMapping(value = "steeringWheel/api", consumes = {MediaType.ALL_VALUE}, produces = MediaType.APPLICATION_JSON_VALUE)
+
 public class SteeringWheelController {
-
+    @Autowired
     private SteeringWheelService steeringWheelService;
-    private SteeringWheelRepository steeringWheelRepository;
-
 
     @GetMapping(value = "read", consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Object show(@RequestParam(required = false) Long id) {
-        return id == null ? steeringWheelRepository.findAll() : steeringWheelRepository.findById(id);
+        return steeringWheelService.show(id);
     }
 
     @PostMapping(value = "create", consumes = MediaType.APPLICATION_JSON_VALUE)
     public SteeringWheel create(@RequestBody SteeringWheel message) {
-        return steeringWheelRepository.save(message);
+        return steeringWheelService.create(message);
     }
 
     @PostMapping(value = "create/several")
     public List<SteeringWheel> create(@RequestBody List<SteeringWheel> message) {
-        return (List<SteeringWheel>) steeringWheelRepository.saveAll(message);
+        return steeringWheelService.createList(message);
     }
 
     @PutMapping(value = "update/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void update(@PathVariable("id") long id, @PathVariable("id") SteeringWheel steeringWheelFromDb,
+    public void update(@PathVariable("id") long id,
                        @RequestBody SteeringWheel steeringWheel) {
         steeringWheelService.updateSteeringWheel(id, steeringWheel);
     }

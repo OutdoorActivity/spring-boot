@@ -1,15 +1,29 @@
 package com.gorbachyov.jsonpostgres.service;
 
-import com.gorbachyov.jsonpostgres.entities.Engine;
+import com.gorbachyov.jsonpostgres.entities.Manual;
 import com.gorbachyov.jsonpostgres.entities.SteeringWheel;
 import com.gorbachyov.jsonpostgres.repositories.SteeringWheelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class SteeringWheelService {
     @Autowired
     private SteeringWheelRepository steeringWheelRepository;
+
+    public SteeringWheel create(SteeringWheel steeringWheel) {
+        return steeringWheelRepository.save(steeringWheel);
+    }
+
+    public Object show(Long id) {
+        return id == null ? steeringWheelRepository.findAll() : steeringWheelRepository.findById(id);
+    }
+
+    public List<SteeringWheel> createList(List<SteeringWheel> steeringWheels) {
+        return (List<SteeringWheel>) steeringWheelRepository.saveAll(steeringWheels);
+    }
 
     public SteeringWheel updateSteeringWheel(Long id, SteeringWheel steeringWheel) {
 
@@ -28,11 +42,7 @@ public class SteeringWheelService {
     }
 
     public void deleteSteeringWheel(Long id) {
-        if (steeringWheelRepository.findById(id).isPresent()) {
-            steeringWheelRepository.deleteById(id);
-        } else {
-            throw new RuntimeException("steering wheel doesn't exist");
-        }
+        steeringWheelRepository.deleteById(id);
     }
 
 }

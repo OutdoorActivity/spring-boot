@@ -3,8 +3,10 @@ package com.gorbachyov.jsonpostgres.entities;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Data
@@ -18,8 +20,8 @@ public class Engine {
 
     private String engineType;
 
-    /*@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "car_id")
-    private Car car;*/
-
+    @Override
+    public String toString() {
+        return engineType;
+    }
 }

@@ -1,41 +1,47 @@
 package com.gorbachyov.jsonpostgres.service;
 
 import com.gorbachyov.jsonpostgres.entities.Car;
+import com.gorbachyov.jsonpostgres.entities.Engine;
 import com.gorbachyov.jsonpostgres.repositories.CarRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class CarService {
     @Autowired
     private CarRepository carRepository;
 
-    public Car updateCar(Long id, Car car) {
+    public CarService() {
 
-        if (carRepository.findById(id).isPresent()) {
-            Car existingCar = carRepository.findById(id).get();
+    }
 
-            existingCar.setManufacturerName(car.getManufacturerName());
-            existingCar.setModelName(car.getModelName());
-            existingCar.setYear(car.getYear());
+    public Car create(Car car) {
+        return carRepository.save(car);
+    }
+
+    public Object show(Long id) {
+        return id == null ? carRepository.findAll() : carRepository.findById(id);
+    }
 
 
-            Car updatedVehicle = carRepository.save(existingCar);
+    public List<Car> createList(List<Car> cars) {
+        return (List<Car>) carRepository.saveAll(cars);
+    }
 
-            return new Car(updatedVehicle.getId(), updatedVehicle.getManufacturerName(),
-                    updatedVehicle.getModelName(), updatedVehicle.getYear());
-        } else {
-            throw new RuntimeException("car doesn't exist");
-        }
+    public void updateCar(Long id, String manufarcturerName, String modelName, int year, Engine engine) {
+        Car newCar = carRepository.findCarById(id);
+        newCar.setManufacturerName(manufarcturerName);
+        newCar.setModelName(modelName);
+        newCar.setYear(year);
+        newCar.setEngine(engine);
+        carRepository.save(newCar);
     }
 
     public void deleteCar(Long id) {
-        if (carRepository.findById(id).isPresent()) {
-            carRepository.deleteById(id);
-        }
-        else {
-            throw new RuntimeException("car doesn't exist");
-        }
+        carRepository.deleteById(id);
     }
+
 
 }

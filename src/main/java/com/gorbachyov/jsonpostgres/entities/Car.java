@@ -3,6 +3,7 @@ package com.gorbachyov.jsonpostgres.entities;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 @Table(schema = "json", name = "cars")
 public class Car {
     @Id
@@ -19,8 +21,9 @@ public class Car {
     private String manufacturerName;
     private String modelName;
     private int year;
-  /*  @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Engine engine;*/
+    @OneToOne(cascade = CascadeType.ALL)
+    private Engine engine;
+
 
 
 }

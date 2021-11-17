@@ -1,8 +1,10 @@
 package com.gorbachyov.jsonpostgres.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 
@@ -10,6 +12,7 @@ import javax.persistence.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 @Table(schema = "json", name = "gears")
 public class Gear {
     @Id
@@ -17,9 +20,9 @@ public class Gear {
     private Long id;
 
     private String gearType;
-    /*@ManyToOne
-    @JoinColumn(name = "ENGINE_ID", referencedColumnName = "ID")
-    private Engine engine;*/
+
+
+
 
 
 }
